@@ -5,3 +5,5 @@
 <script langs="ts" src="./snakeGameTable.ts"></script>
   
 <link rel="stylesheet" href="./SnakeGameTable.css"></link>
+
+//kullanilmiyor
