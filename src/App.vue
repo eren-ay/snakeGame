@@ -26,5 +26,6 @@ export default defineComponent({
   margin-top: 60px;
 }
 
+
 </style>
 
