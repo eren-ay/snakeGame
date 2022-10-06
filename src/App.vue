@@ -1,5 +1,4 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
   <gamePage msg="Welcome to Your Vue.js + TypeScript App"/>
   
 </template>

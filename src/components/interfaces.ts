@@ -12,8 +12,8 @@ export class snakeProp{
     snakeDirection: string;
     snakeDirectionMove = [0,1];
     boardContext:any|CanvasRenderingContext2D;
-    snakeBoxSizeWidth=50;
-    snakeBoxSizeHeight=50;
+    snakeBoxSizeWidth=5;
+    snakeBoxSizeHeight=5;
     
     constructor() {
         this.snakeLocations=[[5,5]];

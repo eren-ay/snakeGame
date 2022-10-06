@@ -1,6 +1,7 @@
 import { SnakeCanvas } from "./interfaces";
 import { snakeProp } from "./interfaces";
 import  constants  from "./snakeConst";
+import moveKeys from './moveKeysConst'
 import { defineComponent } from 'vue';
 import './snakeGameTable.css';
 
@@ -30,12 +31,15 @@ const snakeBoard: SnakeCanvas = {
         const gameBoard:any|HTMLCanvasElement = this.$refs.board;
         snakes.boardContext = gameBoard.getContext("2d");
         this.snakeDrawRect(snakes.boardContext);
+        this.drawWithInterval(2000);
+        
+        
     },
     data() {
       return {
         gameScreen: {
-          width:600,
-          height:600
+          width:800,
+          height:800
         },
         count: 200,
         snake:{
@@ -57,32 +61,41 @@ const snakeBoard: SnakeCanvas = {
           gameBoard.closePath();
         },
         
+        snakeMove(){
+          for (let i = 0; i < snakes.snakeLocations.length; i++) {
+            this.drawRect(snakes.boardContext,snakes.snakeLocX(i),snakes.snakeLocY(i),snakes.snakeBoxSizeWidth,snakes.snakeBoxSizeHeight);
+          } 
+        },
 
         clearRect(gameBoard:any|CanvasRenderingContext2D,x:number,y:number,boxWidth:number,boxHeight:number){
           gameBoard.clearRect(x,y,boxWidth,boxHeight);
         },
         
-
-        boardDrawSnake(){
-          this.plus();
-          if (this.count==208) {
-            this.count=snakes.snakeLocations.length;
-            this.clearRect(snakes.boardContext,snakes.snakeLocX(snakes.snakeLocations.length-3),snakes.snakeLocY(snakes.snakeLocations.length-3),snakes.snakeBoxSizeWidth,snakes.snakeBoxSizeHeight);
-          }
-           snakes.snakeDraw(true);
-           
-        },
-
-
         snakeDrawRect(gameBoard:any|CanvasRenderingContext2D/*,snake:snakeProp*/){
          
-            
-          for (let i = 0; i < snakes.snakeLocations.length; i++) {
-            this.drawRect(snakes.boardContext,snakes.snakeLocX(i),snakes.snakeLocY(i),snakes.snakeBoxSizeWidth,snakes.snakeBoxSizeHeight);
-          } this.boardDrawSnake();
+          
+          this.boardRemoveLastSnake();
+          snakes.snakeDraw(false);
         },
 
+        boardRemoveLastSnake(){
+          this.plus();
+          this.count=snakes.snakeLocations.length;
+          
+          this.clearRect(snakes.boardContext,snakes.snakeLocX(snakes.snakeLocations.length-1),snakes.snakeLocY(snakes.snakeLocations.length-1),snakes.snakeBoxSizeWidth,snakes.snakeBoxSizeHeight); 
+        },
+
+
         
+
+        
+       
+
+        drawWithInterval(delayInMilliseconds:number){
+
+          setInterval(this.snakeDrawRect, delayInMilliseconds);
+        },
+
 
         plus() {
           
@@ -90,35 +103,6 @@ const snakeBoard: SnakeCanvas = {
         },
         
         
-        /*
-        ciz(){
-          snakeBoard.boardContext.moveTo(0, 0);
-          snakeBoard.boardContext.lineTo(100, 100); 
-          snakeBoard.boardContext.stroke();
-        },
-        drawBox() {
-          snakeBoard.boardContext.beginPath();
-          snakeBoard.boardContext.fillStyle = "red";
-          snakeBoard.boardContext.lineWidth = 3;
-          snakeBoard.boardContext.strokeStyle = 'black';
-          const boxSize :number|any = 60;
-          
-          const boxes:number = Math.floor(600 / boxSize);
-          for (let row = 0; row < boxes; row++) {
-            for (let column = 0; column < boxes; column++) {
-              const x = column * boxSize;
-              const y = row * boxSize;
-              snakeBoard.boardContext.rect(x, y, boxSize, boxSize);
-              snakeBoard.boardContext.fill();
-              snakeBoard.boardContext.stroke();
-            }
-          }
-          snakeBoard.boardContext.closePath();
-        },
-        
-        snakeDrawCell(){
-          return null
-        }*/
       },
       
 
