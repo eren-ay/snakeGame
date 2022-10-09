@@ -37,7 +37,6 @@ export class snakeProp{
         }
         const tmpLength=this.snakeLocations.length-1;
         this.snakeMoveNext(tmpLength);
-        
     }
 
     snakeMoveNext(tmpSnakeLength:number):number[]{
@@ -46,11 +45,9 @@ export class snakeProp{
         if (tmpSnakeLength>0) {
             this.snakeLocations[tmpSnakeLength] = this.snakeMoveNext(tmpSnakeLength-1);   
         }
-        
         if (tmpSnakeLength==0){
             this.snakeHeadMoveDirection();
         }
-        
         return  tmpLoc
 
     }
@@ -59,11 +56,8 @@ export class snakeProp{
         this.snakeLocations[0][0]+=this.snakeDirectionMove[0];
         this.snakeLocations[0][1]+=this.snakeDirectionMove[1];
     }
+    
 
-
-    lengthDon():number{
-        return this.snakeLength;
-    }
 
     moveDirection(){
         if (this.snakeDirection=="right") {
