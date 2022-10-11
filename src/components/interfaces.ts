@@ -7,7 +7,7 @@ export interface SnakeCanvas {
     numberOfboxes?: number;
 }
 export class snakeProp{
-    snakeLocations: number[][]; //first index = x, second index = y
+    snakeLocations: number[][]; 
     snakeLength: number;
     snakeDirection: string;
     snakeDirectionMove = [0,1];
@@ -30,16 +30,18 @@ export class snakeProp{
     }
 
     snakeDraw(bait:boolean){
-        if (bait==true) {
-            const snakeBait=this.snakeLocations[this.snakeLength-1];
-            this.snakeLength+=1;
-            this.snakeLocations.push(snakeBait);
-        }
+        const snakeBait=this.snakeLocations[this.snakeLength-1];
+        
         const tmpLength=this.snakeLocations.length-1;
         this.snakeMoveNext(tmpLength);
+        if (bait==true) {
+            this.snakeLength+=1;
+
+            this.snakeLocations.push(snakeBait);
+        }
     }
 
-    snakeMoveNext(tmpSnakeLength:number):number[]{
+    snakeMoveNext(tmpSnakeLength:number){
         
         const tmpLoc=this.snakeLocations[tmpSnakeLength];
         if (tmpSnakeLength>0) {
@@ -49,7 +51,6 @@ export class snakeProp{
             this.snakeHeadMoveDirection();
         }
         return  tmpLoc
-
     }
 
     snakeHeadMoveDirection(){

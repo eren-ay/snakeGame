@@ -1,30 +1,22 @@
 export default [
     {
       direction: "ArrowLeft",
-      move: {
-        x: -1,
-        y: 0
-      }
+      keyCode: 37,
+      move: [-1,0]
     },
     {
       direction: "ArrowUp",
-      move: {
-        x: 0,
-        y: -1
-      }
+      keyCode: 38,
+      move: [0,-1]
     },
     {
       direction: "ArrowRight",
-      move: {
-        x: 1,
-        y: 0
-      }
+      keyCode: 39,
+      move: [1,0]
     },
     {
       direction: "ArrowDown",
-      move: {
-        x: 0,
-        y: 1
-      }
+      keyCode: 40,
+      move: [0,1]
     }
   ];

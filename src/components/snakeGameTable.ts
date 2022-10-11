@@ -26,16 +26,27 @@ export default defineComponent({
 
   mounted() {
     window.addEventListener('keydown', (e) => {
-      if (!e.repeat) {
-        console.log(`${e.key}`);
-      } else {
-        console.log(`Key "${e.key}" repeating [event: keydown]`);
+      for (let i = 0; i < moveKeys.length; i++) {
+        if (e.key==moveKeys[i].direction){
+          snakes.snakeDirectionMove=moveKeys[i].move;
+        }
       }
+      
     });
     this.plus();
     const gameBoard: any | HTMLCanvasElement = this.$refs.board;
     snakes.boardContext = gameBoard.getContext("2d");
-    this.drawWithInterval(snakes,false,1000);
+    setTimeout(() => {
+      this.bait=true;
+    }, 7330);
+    setTimeout(() => {
+      this.bait=true;
+    }, 5220);
+    setTimeout(() => {
+      this.bait=true;
+    }, 6110);
+    
+    setInterval(this.snakeMove, 1000,snakes);
   },
   data() {
     return {
@@ -48,25 +59,27 @@ export default defineComponent({
         cellRow: Number,
         cellColumn: Number,
       },
+      bait:false,
     };
   },
   methods: {
-    snakeMove(snake: snakeProp, bait: boolean) {
+    snakeMove(snake: snakeProp) {
       //  canvas clear
-      if (bait==false) {
+      if (this.bait==false) {
         this.clearRect(snake.boardContext,snake.snakeLocX(snake.snakeLocations.length-1),snake.snakeLocY(snake.snakeLocations.length-1),snake.snakeBoxSizeWidth,snake.snakeBoxSizeHeight);
       }      
-      snake.snakeDraw(bait);
-      snake.snakeLocations[0] = snake.snakeDirectionMove;
+      snake.snakeDraw(this.bait);
       //  canvas drawing
-      this.drawRect(snake.boardContext,snake.snakeLocX(0),snake.snakeLocY(0),snake.snakeBoxSizeWidth,snake.snakeBoxSizeHeight);
-      
+      for (let i = 0; i < snake.snakeLocations.length; i++) {
+        this.drawRect(snake.boardContext,snake.snakeLocX(i),snake.snakeLocY(i),snake.snakeBoxSizeWidth,snake.snakeBoxSizeHeight);   
+        console.log(snake.snakeLocY(i));
+        this.count+=1;    
+      }
+ 
+      this.bait=false;
     },
 
     
-    drawWithInterval(snake:snakeProp ,bait:boolean,delayInMilliseconds: number) {
-      setInterval(this.snakeMove, delayInMilliseconds,snake,bait);
-    },
 
     drawRect(gameBoard: any | CanvasRenderingContext2D,x: number,y: number,boxWidth: number,boxHeight: number) {
       gameBoard.beginPath();
@@ -84,14 +97,14 @@ export default defineComponent({
     clearRect(gameBoard: any | CanvasRenderingContext2D,x: number,y: number,boxWidth: number,boxHeight: number) {
       gameBoard.clearRect(x-3, y-3, boxWidth+6, boxHeight+6);
     },
-
+/*
     moveDirect(evt:KeyboardEvent){
       
       const randomDirectionIndex = Math.floor(Math.random() * 4);
       const moveKeysDirect = moveKeys[randomDirectionIndex];
       snakes.snakeDirectionMove=[moveKeysDirect.move.x,moveKeysDirect.move.y];
     },
-
+*/
 
     plus() {
       return this.count++;
