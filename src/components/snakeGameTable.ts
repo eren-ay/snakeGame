@@ -1,14 +1,9 @@
-import { SnakeCanvas } from "./interfaces";
-import { snakeProp } from "./interfaces";
-import constants from "./snakeConst";
+import { bait } from "./snakeScreen";
+import { snakeProp } from "./snake";
 import moveKeys from "./moveKeysConst";
 import { defineComponent } from "vue";
 import "./snakeGameTable.css";
 
-const snakeBoard: SnakeCanvas = {
-  width: 330,
-  height: 500,
-};
 const snakes = new snakeProp();
 
 export default defineComponent({
@@ -20,7 +15,7 @@ export default defineComponent({
 
   created() {
     //this.gameScreen.height=constants[0].snakeBoard.height;
-    this.plus();
+    this.plus(5);
     //todo game table feature width height vb
   },
 
@@ -28,24 +23,27 @@ export default defineComponent({
     window.addEventListener('keydown', (e) => {
       for (let i = 0; i < moveKeys.length; i++) {
         if (e.key==moveKeys[i].direction){
-          snakes.snakeDirectionMove=moveKeys[i].move;
+          
+          if (((snakes.snakeDirectionMove[0]*-1)==moveKeys[i].move[0])&&((snakes.snakeDirectionMove[1]*-1)==moveKeys[i].move[1])) {
+            // eslint-disable-next-line
+          }else{
+            snakes.snakeDirectionMove=moveKeys[i].move;
+          }
+
         }
       }
+
       
     });
-    this.plus();
+    this.plus(5);
     const gameBoard: any | HTMLCanvasElement = this.$refs.board;
     snakes.boardContext = gameBoard.getContext("2d");
     setTimeout(() => {
       this.bait=true;
-    }, 7330);
+    }, 9330);
     setTimeout(() => {
       this.bait=true;
     }, 5220);
-    setTimeout(() => {
-      this.bait=true;
-    }, 6110);
-    
     setInterval(this.snakeMove, 1000,snakes);
   },
   data() {
@@ -55,59 +53,42 @@ export default defineComponent({
         height: 800,
       },
       count: 200,
-      snake: {
-        cellRow: Number,
-        cellColumn: Number,
-      },
       bait:false,
+      key:38, 
     };
   },
+  
   methods: {
     snakeMove(snake: snakeProp) {
       //  canvas clear
       if (this.bait==false) {
         this.clearRect(snake.boardContext,snake.snakeLocX(snake.snakeLocations.length-1),snake.snakeLocY(snake.snakeLocations.length-1),snake.snakeBoxSizeWidth,snake.snakeBoxSizeHeight);
       }      
+
       snake.snakeDraw(this.bait);
       //  canvas drawing
-      for (let i = 0; i < snake.snakeLocations.length; i++) {
-        this.drawRect(snake.boardContext,snake.snakeLocX(i),snake.snakeLocY(i),snake.snakeBoxSizeWidth,snake.snakeBoxSizeHeight);   
-        console.log(snake.snakeLocY(i));
-        this.count+=1;    
-      }
- 
+      this.drawRect(snake.boardContext,snake.snakeLocX(0),snake.snakeLocY(0),snake.snakeBoxSizeWidth,snake.snakeBoxSizeHeight);   
       this.bait=false;
     },
 
-    
-
     drawRect(gameBoard: any | CanvasRenderingContext2D,x: number,y: number,boxWidth: number,boxHeight: number) {
       gameBoard.beginPath();
-      gameBoard.lineWidth = 3;
       gameBoard.fillStyle = "red";
       gameBoard.strokeStyle = "purple";
       gameBoard.rect(x, y, boxWidth, boxHeight);
       gameBoard.fill();
-      gameBoard.stroke();
       gameBoard.closePath();
     },
 
     
 
     clearRect(gameBoard: any | CanvasRenderingContext2D,x: number,y: number,boxWidth: number,boxHeight: number) {
-      gameBoard.clearRect(x-3, y-3, boxWidth+6, boxHeight+6);
+      gameBoard.clearRect(x, y, boxWidth, boxHeight);
     },
-/*
-    moveDirect(evt:KeyboardEvent){
-      
-      const randomDirectionIndex = Math.floor(Math.random() * 4);
-      const moveKeysDirect = moveKeys[randomDirectionIndex];
-      snakes.snakeDirectionMove=[moveKeysDirect.move.x,moveKeysDirect.move.y];
-    },
-*/
 
-    plus() {
-      return this.count++;
+
+    plus(sayi:number) {
+      this.count= this.count+sayi;
     },
   },
 });
